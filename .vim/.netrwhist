@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/Users/akhosravian/p4_managed/PvZ2/adapt_ios_engineer/PvZ2/Android/sdk/extras/google/google_play_services'
+let g:netrw_dirhist_2='/Users/akhosravian/p4_managed/PvZ2/adapt_ios_engineer/PvZ2/tools/lod_scheduler/lod_scheduler.app'
+let g:netrw_dirhist_3='/Users/akhosravian/p4_managed/PvZ2/adapt_ios_engineer/PvZ2/src'
+let g:netrw_dirhist_4='/Users/akhosravian/p4_managed/PvZ2/adapt_ios_engineer/PvZ2'
+let g:netrw_dirhist_5='/Users/akhosravian/p4_managed/PvZ2/adapt_ios_engineer/PvZ2/tmpDist/ipad/packages'
+let g:netrw_dirhist_6='/Users/akhosravian/Desktop/android-basic-samples/BasicSamples/TrivialQuest2'
