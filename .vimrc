@@ -17,11 +17,6 @@ else
 	set gfn=Consolas:h10:cANSI
 endif
 
-"powerline
-"python from powerline.vim import setup as powerline_setup
-"python powerline_setup()
-"python del powerline_setup
-
 " disable tabs in macvim
 autocmd BufWinEnter,BufNewFile * silent tabo
 
@@ -130,24 +125,6 @@ if !exists("au_p4_cmd")
    au FileChangedRO * call P4Checkout()
 endif
 
-" Based on VIM tip 102: automatic tab completion of keywords
-"function! InsertTabWrapper(dir)
-"    let col = col('.') - 1
-"    if !col || getline('.')[col - 1] !~ '\k'
-"        return "\<tab>"
-"     elseif "back" == a:dir
-"         return "\<c-p>"
-"     else
-"         return "\<c-n>"
-"     endif
-"endfunction
-
-map <silent> ,b :TagbarToggle<cr>
-  
-"inoremap <silent><tab> <c-r>=InsertTabWrapper("fwd")<cr>
-"inoremap <silent><s-tab> <c-r>=InsertTabWrapper("back")<cr>
-
-"let g:ycm_server_log_level = 'debug'
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
@@ -156,4 +133,5 @@ let g:ctrlp_custom_ignore = '^.*\.meta$'
 
 autocmd FileType cs nnoremap <c-]> :YcmCompleter GoTo<cr>
 
+"Move the preview window to the bottom of the screen
 set splitbelow
