@@ -1,0 +1,16 @@
+*
+!/.gitignore.d
+!/.gitignore.d/vim
+!/.vim
+!/.vim/autoload
+!/.vim/autoload/pathogen.vim
+!/.vim/bundle
+!/.vim/bundle/YouCompleteMe
+!/.vim/bundle/ctrlp
+!/.vim/bundle/syntastic
+!/.vim/bundle/vim-windowswap
+!/.vim/colors
+!/.vim/colors/zenburn.vim
+!/.vim/tmp
+!/.vim/tmp/.gitignore
+!/.vimrc
