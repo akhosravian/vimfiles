@@ -3,14 +3,11 @@
 !/.gitignore.d/vim
 !/.vim
 !/.vim/autoload
-!/.vim/autoload/pathogen.vim
+!/.vim/autoload/**
 !/.vim/bundle
-!/.vim/bundle/YouCompleteMe
-!/.vim/bundle/ctrlp
-!/.vim/bundle/syntastic
-!/.vim/bundle/vim-windowswap
+!/.vim/bundle/**
 !/.vim/colors
-!/.vim/colors/zenburn.vim
+!/.vim/colors/**
 !/.vim/tmp
 !/.vim/tmp/.gitignore
 !/.vimrc
