@@ -4,6 +4,29 @@ let mapleader = ","
 execute pathogen#infect()
 syntax enable
 filetype plugin indent on
+
+" ***********************************
+" *     settings!                   *
+" ***********************************
+set tabstop=4
+set shiftwidth=4
+set smartcase
+set ignorecase
+set expandtab
+set hlsearch
+set incsearch
+
+" Hide buffers instead of closing them (allows buffer swapping without saving)
+set hidden
+
+"Move the preview window to the bottom of the screen
+set splitbelow
+
+colors zenburn
+
+"Map space to disable search highlights (without changing other functionality)
+nnoremap <space> :noh<return><esc>
+
 "store temporary files not in a non annoying location
 if has("unix")
 	set directory=~/.vim/tmp/
@@ -17,25 +40,6 @@ if has("unix")
 else
 	set gfn=Consolas:h10:cANSI
 endif
-
-set tabstop=4
-set shiftwidth=4
-set smartcase
-set ignorecase
-set expandtab
-set hlsearch
-set incsearch
-
-"Move the preview window to the bottom of the screen
-set splitbelow
-
-colors zenburn
-
-"Map space to disable search highlights (without changing other functionality)
-nnoremap <space> :noh<return><esc>
-
-" Hide buffers instead of closing them (allows buffer swapping without saving)
-set hidden
 
 " ***********************************
 " *     vimrc manipulation          *
