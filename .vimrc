@@ -46,16 +46,16 @@ endif
 " ***********************************
 if has("unix")
     map <leader>v :sp ~/.vimrc<CR><C-W>_
-    map <silent> ,V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+    map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 else
     map <leader>v :sp ~/_vimrc<CR><C-W>_
-    map <silent> ,V :source ~/_vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+    map <silent> <leader>V :source ~/_vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 endif
 
 " ***********************************
 " * Filesystem browsing             *
 " ***********************************
-map <leader>w :exe ":lcd %:p:h"<CR>:exe ":echo 'changed pwd to current buffers'"<CR>
+map <leader>W :exe ":lcd %:p:h"<CR>:exe ":echo 'changed pwd to current buffers'"<CR>
 
 function! OPEN_FILEBROWSER_CURR_BUFFER()
 	if has("unix")
@@ -147,4 +147,10 @@ autocmd FileType c,cpp,objc,objcpp,python,cs nnoremap <c-]> :YcmCompleter GoTo<c
 " ctrlp.vim
 " ignore unity .meta files
 let g:ctrlp_custom_ignore = '^.*\.meta$'
+
+" vim-windowswap
+let g:windowswap_map_keys = 0 "prevent default bindings
+nnoremap <silent> <leader>yw :call WindowSwap#MarkWindowSwap()<CR>
+nnoremap <silent> <leader>pw :call WindowSwap#DoWindowSwap()<CR>
+nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
 
