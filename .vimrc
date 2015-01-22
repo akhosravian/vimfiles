@@ -2,6 +2,7 @@
 let mapleader = ","
 "Pathogen
 execute pathogen#infect()
+syntax enable
 filetype plugin indent on
 "store temporary files not in a non annoying location
 if has("unix")
@@ -17,43 +18,28 @@ else
 	set gfn=Consolas:h10:cANSI
 endif
 
-" disable tabs in macvim
-autocmd BufWinEnter,BufNewFile * silent tabo
-
 set tabstop=4
 set shiftwidth=4
 set smartcase
 set ignorecase
 set expandtab
-syntax on
-set ic
 set hlsearch
 set incsearch
 
-" Python files always use spaces for tabs
-au Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
-au BufRead,BufNewFile *.fx		set filetype=fx
+"Move the preview window to the bottom of the screen
+set splitbelow
 
-"for golang
-filetype off
-filetype plugin indent off
-set runtimepath+=/usr/local/go/misc/vim
-filetype plugin indent on
-syntax on
-autocmd FileType go compiler go
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
-
-set cindent
 colors zenburn
 
 "Map space to disable search highlights (without changing other functionality)
 nnoremap <space> :noh<return><esc>
 
-" this is busted right now
-"set clipboard=unnamed
+" Hide buffers instead of closing them (allows buffer swapping without saving)
 set hidden
 
-"Macro to load .vimrc and another to reload it after editing
+" ***********************************
+" *     vimrc manipulation          *
+" ***********************************
 if has("unix")
     map <leader>v :sp ~/.vimrc<CR><C-W>_
     map <silent> ,V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
@@ -62,7 +48,9 @@ else
     map <silent> ,V :source ~/_vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 endif
 
-"change to directory of the current buffer
+" ***********************************
+" * Filesystem browsing             *
+" ***********************************
 map <leader>w :exe ":lcd %:p:h"<CR>:exe ":echo 'changed pwd to current buffers'"<CR>
 
 function! OPEN_FILEBROWSER_CURR_BUFFER()
@@ -78,25 +66,27 @@ function! OPEN_FILEBROWSER_CURR_BUFFER()
 endfunction
 map <leader>t :exe OPEN_FILEBROWSER_CURR_BUFFER()<CR><CR>
 
-"perforce manipulation (edit/revert)
-function! P4_EDIT_CURR_FILE() 
+" ***********************************
+" *         Perforce                *
+" ***********************************
+function! P4EditCurrentFile() 
 	if has("unix")
 		exe "!p4 edit %"
 	else
 		exe "!start p4 edit %"
 	endif
 endfunction
-map <leader>e :exe P4_EDIT_CURR_FILE()<CR>:exe ":echo 'opened file for edit'"<CR>:e %<CR>
-map <leader>E :bufdo exe P4_EDIT_CURR_FILE()<CR>:bufdo exe ":e"<CR>
+map <leader>e :exe P4EditCurrentFile()<CR>:exe ":echo 'opened file for edit'"<CR>:e %<CR>
+map <leader>E :bufdo exe P4EditCurrentFile()<CR>:bufdo exe ":e"<CR>
 
-function! P4_REVERT_CURR_FILE() 
+function! P4RevertCurrentFile() 
 	if has("unix")
 		exe "!p4 revert %"
 	else
 		exe "!start p4 revert %"
 	endif
 endfunction
-map <leader>R :exe P4_REVERT_CURR_FILE()<CR>:exe ":echo 'reverted file'"<CR>
+map <leader>R :exe P4RevertCurrentFile()<CR>:exe ":echo 'reverted file'"<CR>
 
 " Set a buffer-local variable to the perforce path, if this file is under the
 " perforce root.
@@ -125,13 +115,32 @@ if !exists("au_p4_cmd")
    au FileChangedRO * call P4Checkout()
 endif
 
+" ***********************************
+" *         Language Specific       *
+" ***********************************
+au Filetype python setlocal expandtab tabstop=8 shiftwidth=4 softtabstop=4
+
+"for golang
+filetype off
+filetype plugin indent off
+set runtimepath+=/usr/local/go/misc/vim
+filetype plugin indent on
+syntax on
+autocmd FileType go compiler go
+autocmd FileType go autocmd BufWritePre <buffer> Fmt
+
+" ***********************************
+" *         Plugin settings         *
+" ***********************************
+
+" YouCompleteMe
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 
+autocmd FileType c, cpp, objc, objcpp, python, cs nnoremap <c-]> :YcmCompleter GoTo<cr>
+
+" ctrlp.vim
+" ignore unity .meta files
 let g:ctrlp_custom_ignore = '^.*\.meta$'
 
-autocmd FileType cs nnoremap <c-]> :YcmCompleter GoTo<cr>
-
-"Move the preview window to the bottom of the screen
-set splitbelow
