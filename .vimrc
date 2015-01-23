@@ -144,6 +144,22 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 
 autocmd FileType c,cpp,objc,objcpp,python,cs nnoremap <c-]> :YcmCompleter GoTo<cr>
 
+" Omnisharp
+" Let YCM start/stop the omnisharp server
+let g:Omnisharp_start_server = 0
+let g:Omnisharp_stop_server = 0
+
+autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
+autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
+
+" Contextual code actions (requires CtrlP)
+nnoremap <leader><space> :OmniSharpGetCodeActions<cr>
+" " Run code actions with text selected in visual mode to extract method
+vnoremap <leader><space> :call OmniSharp#GetCodeActions('visual')<cr>
+
+" Add syntax highlighting for types and interfaces
+nnoremap <leader>th :OmniSharpHighlightTypes<cr>
+
 " ctrlp.vim
 " ignore unity .meta files
 let g:ctrlp_custom_ignore = '^.*\.meta$'
