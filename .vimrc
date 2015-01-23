@@ -142,15 +142,33 @@ let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 
-autocmd FileType c,cpp,objc,objcpp,python,cs nnoremap <c-]> :YcmCompleter GoTo<cr>
+augroup ycm_commands
+    autocmd!
+
+    autocmd FileType c,cpp,objc,objcpp,python,cs nnoremap <c-]> :YcmCompleter GoTo<cr>
+    autocmd FileType c,cpp,objc,objcpp,python,cs nnoremap <leader>b :silent YcmForceCompileAndDiagnostics<cr>
+augroup END
 
 " Omnisharp
 " Let YCM start/stop the omnisharp server
 let g:Omnisharp_start_server = 0
 let g:Omnisharp_stop_server = 0
 
-autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
-autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
+augroup omnisharp_commands
+    autocmd!
+
+    autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
+    autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr> 
+    autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
+    function! OmniSharpJoinFormat()
+        try                
+            exe "undojoin"
+            exe "OmniSharpCodeFormat"
+        catch              
+        endtry
+    endfunction
+    autocmd FileType cs autocmd BufWritePre <buffer> call OmniSharpJoinFormat()
+augroup END
 
 " Contextual code actions (requires CtrlP)
 nnoremap <leader><space> :OmniSharpGetCodeActions<cr>
