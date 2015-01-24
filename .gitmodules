@@ -1,0 +1,3 @@
+[submodule ".vim/bundle/Omnisharp"]
+	path = .vim/bundle/Omnisharp
+	url = https://github.com/nosami/Omnisharp.git
