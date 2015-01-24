@@ -1,9 +1,6 @@
 [submodule ".vim/bundle/Omnisharp"]
 	path = .vim/bundle/Omnisharp
 	url = https://github.com/nosami/Omnisharp.git
-[submodule "/Users/andrew/.vim/bundle/vim-windowswap"]
-	path = /Users/andrew/.vim/bundle/vim-windowswap
-	url = https://github.com/wesQ3/vim-windowswap
 [submodule ".vim/bundle/syntastic"]
 	path = .vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
