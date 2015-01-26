@@ -169,6 +169,9 @@ augroup omnisharp_commands
         endtry
     endfunction
     autocmd FileType cs autocmd BufWritePre <buffer> call OmniSharpJoinFormat()
+
+    "show type information automatically when the cursor stops moving
+    autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
 augroup END
 
 " Contextual code actions (requires CtrlP)
