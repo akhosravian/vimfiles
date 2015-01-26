@@ -158,8 +158,9 @@ let g:Omnisharp_stop_server = 0
 augroup omnisharp_commands
     autocmd!
 
-    autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
+    " Fix things
     autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr> 
+    autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
     autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
     function! OmniSharpJoinFormat()
         try                
