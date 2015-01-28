@@ -158,9 +158,8 @@ let g:Omnisharp_stop_server = 0
 augroup omnisharp_commands
     autocmd!
 
-    " Fix things
+    " Bindings for fixing things
     autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr> 
-    autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
     autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
     function! OmniSharpJoinFormat()
         try                
@@ -171,6 +170,7 @@ augroup omnisharp_commands
     endfunction
     autocmd FileType cs autocmd BufWritePre <buffer> call OmniSharpJoinFormat()
 
+    autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
     "show type information automatically when the cursor stops moving
     autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
 augroup END
