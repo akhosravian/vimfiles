@@ -175,14 +175,6 @@ augroup omnisharp_commands
     autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
 augroup END
 
-" Contextual code actions (requires CtrlP)
-nnoremap <leader><space> :OmniSharpGetCodeActions<cr>
-" " Run code actions with text selected in visual mode to extract method
-vnoremap <leader><space> :call OmniSharp#GetCodeActions('visual')<cr>
-
-" Add syntax highlighting for types and interfaces
-nnoremap <leader>th :OmniSharpHighlightTypes<cr>
-
 " ctrlp.vim
 " ignore unity .meta files
 let g:ctrlp_custom_ignore = '^.*\.meta$'
