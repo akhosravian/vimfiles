@@ -70,6 +70,8 @@ function! OPEN_FILEBROWSER_CURR_BUFFER()
 endfunction
 map <leader>t :exe OPEN_FILEBROWSER_CURR_BUFFER()<CR><CR>
 
+map <leader>f :execute "vimgrep /" . "<C-R>"" . "/j **/*." . expand("%:e") <Bar> cw<CR>\|copen
+
 " ***********************************
 " *         Perforce                *
 " ***********************************
