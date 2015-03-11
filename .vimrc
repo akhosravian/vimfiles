@@ -70,7 +70,29 @@ function! OPEN_FILEBROWSER_CURR_BUFFER()
 endfunction
 map <leader>t :exe OPEN_FILEBROWSER_CURR_BUFFER()<CR><CR>
 
-map <leader>f :execute "vimgrep /" . "<C-R>"" . "/j **/*." . expand("%:e") <Bar> cw<CR>\|copen
+function! s:GrepOperator(type)
+    let saved_unnamed_register = @@
+
+    if a:type ==# 'v'
+        normal! `<v`>y
+    elseif a:type ==# 'char'
+        normal! `[v`]y
+    else
+        return
+    endif
+
+    execute "vimgrep " . shellescape(@@) . "j **/*." . expand("%:e")
+    execute "wincmd w"
+
+    let @@ = saved_unnamed_register
+endfunction
+
+nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<cr>g@
+vnoremap <leader>g :<c-u>call <SID>GrepOperator(visualmode())<cr>
+map [q :cprev<CR>
+map ]q :cnext<CR>
+map ,q :cclose<CR>
+map ,Q :copen<CR>
 
 " ***********************************
 " *         Perforce                *
