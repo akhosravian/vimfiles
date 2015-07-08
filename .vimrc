@@ -70,38 +70,39 @@ function! OPEN_FILEBROWSER_CURR_BUFFER()
 endfunction
 map <leader>t :exe OPEN_FILEBROWSER_CURR_BUFFER()<CR><CR>
 
-function! s:GrepOperator(type)
-    let saved_unnamed_register = @@
-
-    if a:type ==# 'v'
-        normal! `<v`>y
-    elseif a:type ==# 'char'
-        normal! `[v`]y
-    else
-        return
-    endif
-
-    execute "vimgrep " . shellescape(@@) . "j **/*." . expand("%:e")
-    execute "wincmd w"
-
-    let @@ = saved_unnamed_register
-endfunction
-
-nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<cr>g@
-vnoremap <leader>g :<c-u>call <SID>GrepOperator(visualmode())<cr>
 map [q :cprev<CR>
 map ]q :cnext<CR>
 map ,q :cclose<CR>
 map ,Q :copen<CR>
 
 " ***********************************
+" * brew install the_silver_searcher*
+" ***********************************
+if executable('ag')
+    " Use ag over grep
+    set grepprg=ag\ --vimgrep\ $*
+    set grepformat=%f:%l:%c:%m
+
+    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+    " ag is fast enough that CtrlP doesn't need to cache
+    let g:ctrlp_use_caching = 0
+
+    nnoremap <leader>g :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+    command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+    nnoremap \ :Ag<SPACE>
+endif
+
+" ***********************************
 " *         Perforce                *
 " ***********************************
 function! P4EditCurrentFile() 
 	if has("unix")
-		exe "!p4 edit %"
+		exe "!p4 edit \"%\""
 	else
-		exe "!start p4 edit %"
+		exe "!start p4 edit \"%\""
 	endif
 endfunction
 map <leader>e :exe P4EditCurrentFile()<CR>:exe ":echo 'opened file for edit'"<CR>:e %<CR>
@@ -129,7 +130,7 @@ endfunction
 function! P4Checkout()
     if exists("b:p4path")
         if (confirm("Checkout from Perforce?", "&Yes\n&No", 1) == 1)
-            call system("p4 edit " . b:p4path . " > /dev/null")
+            call system("p4 edit \"" . b:p4path . "\" > /dev/null")
             if v:shell_error == 0
                 set noreadonly
             endif
@@ -198,6 +199,20 @@ augroup omnisharp_commands
     autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
     "show type information automatically when the cursor stops moving
     autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
+
+    " Contextual code actions (requires CtrlP)
+    nnoremap <leader><space> :OmniSharpGetCodeActions<cr>
+    " Run code actions with text selected in visual mode to extract method
+    vnoremap <leader><space> :call OmniSharp#GetCodeActions('visual')<cr>
+
+    " Add syntax highlighting for types and interfaces
+    nnoremap <leader>th :OmniSharpHighlightTypes<cr>
+
+    " Tests
+    nnoremap <leader>rt :OmniSharpRunTests<cr>
+    nnoremap <leader>rf :OmniSharpRunTestFixture<cr>
+    nnoremap <leader>ra :OmniSharpRunAllTests<cr>
+    nnoremap <leader>rl :OmniSharpRunLastTests<cr>
 augroup END
 
 " ctrlp.vim
