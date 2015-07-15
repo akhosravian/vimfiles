@@ -80,6 +80,8 @@ map ]q :cnext<CR>
 map ,q :cclose<CR>
 map ,Q :copen<CR>
 
+set wildignore+=*.meta
+
 " ***********************************
 " * brew install the_silver_searcher*
 " ***********************************
@@ -96,7 +98,7 @@ if executable('ag')
 
     nnoremap <leader>g :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
-    command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+    command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
     nnoremap \ :Ag<SPACE>
 endif
 
