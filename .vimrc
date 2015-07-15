@@ -222,10 +222,6 @@ augroup omnisharp_commands
     nnoremap <leader>rl :OmniSharpRunLastTests<cr>
 augroup END
 
-" ctrlp.vim
-" ignore unity .meta files
-let g:ctrlp_custom_ignore = '^.*\.meta$'
-
 " vim-windowswap
 let g:windowswap_map_keys = 0 "prevent default bindings
 nnoremap <silent> <leader>yw :call WindowSwap#MarkWindowSwap()<CR>
