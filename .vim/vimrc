@@ -1,5 +1,5 @@
 "Andrew Khosravian's .vimrc
-let mapleader = ","
+let mapleader = " "
 "Powerline
 python from powerline.vim import setup as powerline_setup
 python powerline_setup()
@@ -50,7 +50,7 @@ endif
 " *     vimrc manipulation          *
 " ***********************************
 if has("unix")
-    map <leader>v :sp ~/.vimrc<CR><C-W>_
+    map <leader>v :sp ~/.vim/vimrc<CR><C-W>_
     map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 else
     map <leader>v :sp ~/_vimrc<CR><C-W>_
