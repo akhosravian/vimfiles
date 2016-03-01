@@ -1,9 +1,5 @@
 "Andrew Khosravian's .vimrc
 let mapleader = " "
-"Powerline
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
 
 "Pathogen
 execute pathogen#infect()
@@ -26,6 +22,23 @@ set hidden
 
 "Move the preview window to the bottom of the screen
 set splitbelow
+
+let g:netrw_liststyle=3 " better file explorer style
+
+set statusline=   " clear the statusline for when vimrc is reloaded
+set statusline+=%-3.3n\                      " buffer number
+set statusline+=%f\                          " file name
+set statusline+=%h%m%r%w                     " flags
+set statusline+=[%{strlen(&ft)?&ft:'none'},  " filetype
+set statusline+=%{strlen(&fenc)?&fenc:&enc}, " encoding
+set statusline+=%{&fileformat}]              " file format
+set statusline+=%=                           " right align
+set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\  " highlight
+set statusline+=%b,0x%-8B\                   " current char
+set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
+
+set laststatus=2 " show status line even with a single window
+
 
 colors zenburn
 
@@ -51,7 +64,7 @@ endif
 " ***********************************
 if has("unix")
     map <leader>v :sp ~/.vim/vimrc<CR><C-W>_
-    map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+    map <silent> <leader>V :source ~/.vim/vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 else
     map <leader>v :sp ~/_vimrc<CR><C-W>_
     map <silent> <leader>V :source ~/_vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
