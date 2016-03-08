@@ -86,7 +86,7 @@ function! OPEN_FILEBROWSER_CURR_BUFFER()
         exe "!start explorer " . expand("%:p:h")
 	endif
 endfunction
-map <leader>t :exe OPEN_FILEBROWSER_CURR_BUFFER()<CR><CR>
+map <leader>T :exe OPEN_FILEBROWSER_CURR_BUFFER()<CR><CR>
 
 map [q :cprev<CR>
 map ]q :cnext<CR>
