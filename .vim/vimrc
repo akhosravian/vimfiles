@@ -90,8 +90,8 @@ map <leader>t :exe OPEN_FILEBROWSER_CURR_BUFFER()<CR><CR>
 
 map [q :cprev<CR>
 map ]q :cnext<CR>
-map ,q :cclose<CR>
-map ,Q :copen<CR>
+map <leader>q :cclose<CR>
+map <leader>Q :copen<CR>
 
 set wildignore+=*.meta
 
