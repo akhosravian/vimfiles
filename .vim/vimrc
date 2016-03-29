@@ -26,7 +26,7 @@ set splitbelow
 let g:netrw_liststyle=3 " better file explorer style
 
 set statusline=   " clear the statusline for when vimrc is reloaded
-set statusline+=%-3.3n\                      " buffer number
+set statusline+=%-4.4n\                      " buffer number
 set statusline+=%f\                          " file name
 set statusline+=%h%m%r%w                     " flags
 set statusline+=[%{strlen(&ft)?&ft:'none'},  " filetype
