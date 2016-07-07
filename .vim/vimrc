@@ -158,6 +158,8 @@ function! P4Checkout()
     endif
 endfunction
 
+command! FormatJSON %!python -m json.tool
+
 if !exists("au_p4_cmd")
    let au_p4_cmd=1
    au BufEnter * call IsUnderPerforce()
