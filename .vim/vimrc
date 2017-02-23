@@ -46,8 +46,9 @@ colors zenburn
 nnoremap <space> :noh<return><esc>
 
 "Tab navigation
-nnoremap <C-[> :tabprevious<CR>
-nnoremap <C-]> :tabnext<CR>
+nnoremap <C-j> :tabprevious<CR>
+nnoremap <C-k> :tabnext<CR>
+set switchbuf+=usetab,newtab
 
 "store temporary files not in a non annoying location
 if has("unix")
