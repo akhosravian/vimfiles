@@ -45,6 +45,10 @@ colors zenburn
 "Map space to disable search highlights (without changing other functionality)
 nnoremap <space> :noh<return><esc>
 
+"Tab navigation
+nnoremap <C-[> :tabprevious<CR>
+nnoremap <C-]> :tabnext<CR>
+
 "store temporary files not in a non annoying location
 if has("unix")
 	set directory=~/.vim/tmp/
