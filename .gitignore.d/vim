@@ -8,6 +8,12 @@
 !/.vim/bundle/**
 !/.vim/colors
 !/.vim/colors/**
+!/.vim/ftdetect
+!/.vim/ftdetect/**
+!/.vim/indent
+!/.vim/indent/**
+!/.vim/syntax
+!/.vim/syntax/**
 !/.vim/tmp
 !/.vim/tmp/.gitignore
 !/.vimrc
