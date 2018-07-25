@@ -70,8 +70,8 @@ if has("unix")
     map <leader>v :sp ~/.vim/vimrc<CR><C-W>_
     map <silent> <leader>V :source ~/.vim/vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 else
-    map <leader>v :sp ~/_vimrc<CR><C-W>_
-    map <silent> <leader>V :source ~/_vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+    map <leader>v :sp ~/vimfiles/vimrc<CR><C-W>_
+    map <silent> <leader>V :source ~/vimfiles/vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 endif
 
 " ***********************************
@@ -174,6 +174,7 @@ endif
 " *         Language Specific       *
 " ***********************************
 au Filetype python setlocal expandtab tabstop=8 shiftwidth=4 softtabstop=4
+au Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
 
 "for golang
 filetype off
