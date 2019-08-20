@@ -56,6 +56,8 @@ else
 	set directory=%TMP%
 endif
 
+set viminfo+=n~/.vim/viminfo
+
 "Change the default font
 if has("unix")
 	set gfn=Meslo\ LG\ M\ for\ Powerline:h14
