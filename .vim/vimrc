@@ -69,11 +69,11 @@ endif
 " *     vimrc manipulation          *
 " ***********************************
 if has("unix")
-    map <leader>v :sp ~/.vim/vimrc<CR><C-W>_
-    map <silent> <leader>V :source ~/.vim/vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+	map <leader>v :sp ~/.vim/vimrc<CR><C-W>_
+	map <silent> <leader>V :source ~/.vim/vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 else
-    map <leader>v :sp ~/vimfiles/vimrc<CR><C-W>_
-    map <silent> <leader>V :source ~/vimfiles/vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+	map <leader>v :sp ~/vimfiles/vimrc<CR><C-W>_
+	map <silent> <leader>V :source ~/vimfiles/vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 endif
 
 " ***********************************
@@ -89,7 +89,7 @@ function! OPEN_FILEBROWSER_CURR_BUFFER()
 	"%:t = filename only
 		exe "!open -R " . expand("%:p:h")
 	else
-        exe "!start explorer " . expand("%:p:h")
+		exe "!start explorer " . expand("%:p:h")
 	endif
 endfunction
 map <leader>T :exe OPEN_FILEBROWSER_CURR_BUFFER()<CR><CR>
@@ -105,20 +105,20 @@ set wildignore+=*.meta
 " * brew install the_silver_searcher*
 " ***********************************
 if executable('ag')
-    " Use ag over grep
-    set grepprg=ag\ --vimgrep\ $*
-    set grepformat=%f:%l:%c:%m
+	" Use ag over grep
+	set grepprg=ag\ --vimgrep\ $*
+	set grepformat=%f:%l:%c:%m
 
-    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+	" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
-    " ag is fast enough that CtrlP doesn't need to cache
-    let g:ctrlp_use_caching = 0
+	" ag is fast enough that CtrlP doesn't need to cache
+	let g:ctrlp_use_caching = 0
 
-    nnoremap <leader>g :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+	nnoremap <leader>g :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
-    command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-    nnoremap \ :Ag<SPACE>
+	command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+	nnoremap \ :Ag<SPACE>
 endif
 
 " ***********************************
@@ -146,22 +146,22 @@ map <leader>R :exe P4RevertCurrentFile()<CR>:exe ":echo 'reverted file'"<CR>
 " Set a buffer-local variable to the perforce path, if this file is under the
 " perforce root.
 function! IsUnderPerforce()
-    let l:where = system("p4 where " . expand("%"))
-    if v:shell_error == 0
-        let b:p4path = substitute(l:where, "\\([^ ]*\\).*", "\\1", "")
-    endif
+	let l:where = system("p4 where " . expand("%"))
+	if v:shell_error == 0
+		let b:p4path = substitute(l:where, "\\([^ ]*\\).*", "\\1", "")
+	endif
 endfunction
 
 " Confirm with the user, then checkout a file from perforce.
 function! P4Checkout()
-    if exists("b:p4path")
-        if (confirm("Checkout from Perforce?", "&Yes\n&No", 1) == 1)
-            call system("p4 edit \"" . b:p4path . "\" > /dev/null")
-            if v:shell_error == 0
-                set noreadonly
-            endif
-        endif
-    endif
+	if exists("b:p4path")
+		if (confirm("Checkout from Perforce?", "&Yes\n&No", 1) == 1)
+			call system("p4 edit \"" . b:p4path . "\" > /dev/null")
+			if v:shell_error == 0
+				set noreadonly
+			endif
+		endif
+	endif
 endfunction
 
 command! FormatJSON %!python -m json.tool
@@ -191,6 +191,18 @@ autocmd FileType go autocmd BufWritePre <buffer> Fmt
 " *         Plugin settings         *
 " ***********************************
 
+" clang-format
+augroup clang_format_commands
+	autocmd!
+
+	function! ClangFormat()
+		let l:lines="all"
+		py3f ~/.vim/clang-format.py
+	endfunction
+
+	autocmd Filetype cpp autocmd BufWritePre <buffer> call ClangFormat()
+augroup END
+
 " YouCompleteMe
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -199,50 +211,10 @@ let g:ycm_csharp_server_port = 2000
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 
 augroup ycm_commands
-    autocmd!
+	autocmd!
 
-    autocmd FileType c,cpp,objc,objcpp,python,cs nnoremap <c-]> :YcmCompleter GoTo<cr>
-    autocmd FileType c,cpp,objc,objcpp,python,cs nnoremap <leader>b :silent YcmForceCompileAndDiagnostics<cr>
-augroup END
-
-" Omnisharp
-" Let YCM start/stop the omnisharp server
-let g:Omnisharp_start_server = 0
-let g:Omnisharp_stop_server = 0
-
-augroup omnisharp_commands
-    autocmd!
-
-    " Bindings for fixing things
-    autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr> 
-    autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
-    function! OmniSharpJoinFormat()
-        try                
-            exe "undojoin"
-            exe "OmniSharpCodeFormat"
-        catch              
-        endtry
-    endfunction
-    autocmd FileType cs autocmd BufWritePre <buffer> call OmniSharpJoinFormat()
-
-    autocmd FileType cs nnoremap <leader>fi :OmniSharpFindImplementations<cr>
-    autocmd FileType cs nnoremap <leader>ft :OmniSharpFindType<cr>
-    autocmd FileType cs nnoremap <leader>fs :OmniSharpFindSymbol<cr>
-    autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
-    "finds members in the current buffer
-    autocmd FileType cs nnoremap <leader>fm :OmniSharpFindMembers<cr>
-    " cursor can be anywhere on the line containing an issue
-    autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr>
-    autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
-    autocmd FileType cs nnoremap <leader>tt :OmniSharpTypeLookup<cr>
-    autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
-    "show type information automatically when the cursor stops moving
-    autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
-
-    " Contextual code actions (requires CtrlP)
-    nnoremap <leader><space> :OmniSharpGetCodeActions<cr>
-    " Run code actions with text selected in visual mode to extract method
-    vnoremap <leader><space> :call OmniSharp#GetCodeActions('visual')<cr>
+	autocmd FileType c,cpp,objc,objcpp,python,cs nnoremap <c-]> :YcmCompleter GoTo<cr>
+	autocmd FileType c,cpp,objc,objcpp,python,cs nnoremap <leader>b :silent YcmForceCompileAndDiagnostics<cr>
 augroup END
 
 " vim-windowswap
