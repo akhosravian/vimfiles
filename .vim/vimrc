@@ -69,11 +69,11 @@ endif
 " *     vimrc manipulation          *
 " ***********************************
 if has("unix")
-	map <leader>v :sp ~/.vim/vimrc<CR><C-W>_
-	map <silent> <leader>V :source ~/.vim/vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+	map <leader>V :sp ~/.vim/vimrc<CR><C-W>_
+	map <silent> <leader>v :source ~/.vim/vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 else
-	map <leader>v :sp ~/vimfiles/vimrc<CR><C-W>_
-	map <silent> <leader>V :source ~/vimfiles/vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+	map <leader>V :sp ~/vimfiles/vimrc<CR><C-W>_
+	map <silent> <leader>v :source ~/vimfiles/vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 endif
 
 " ***********************************
@@ -135,31 +135,43 @@ map <leader>e :exe P4EditCurrentFile()<CR>:exe ":echo 'opened file for edit'"<CR
 map <leader>E :bufdo exe P4EditCurrentFile()<CR>:bufdo exe ":e"<CR>
 
 function! P4RevertCurrentFile() 
-	if has("unix")
-		exe "!p4 revert %"
+	if exists("b:p4path")
+		let l:p4error = system("p4 revert \"" . b:p4path . "\"")
+		echom l:p4error
+		if l:p4error =~ 'was edit, reverted'
+			set readonly
+		else
+			echoe l:p4error
+		endif
 	else
-		exe "!start p4 revert %"
+		if has("unix")
+			exe "!p4 revert %"
+		else
+			exe "!start p4 revert %"
+		endif
+		echo 'reverted file'
 	endif
 endfunction
-map <leader>R :exe P4RevertCurrentFile()<CR>:exe ":echo 'reverted file'"<CR>
+map <leader>R :call P4RevertCurrentFile()<cr>
 
 " Set a buffer-local variable to the perforce path, if this file is under the
 " perforce root.
 function! IsUnderPerforce()
-	let l:where = system("p4 where " . expand("%"))
+	let l:where = system("p4 where " . expand("%:p"))
 	if v:shell_error == 0
-		let b:p4path = substitute(l:where, "\\([^ ]*\\).*", "\\1", "")
+		let b:p4path = substitute(l:where, "\\([^ ]*\\) \\([^ ]*\\) \\([^ ]*\\) \\([^ ]*\\).*", "\\4", "")
 	endif
 endfunction
 
-" Confirm with the user, then checkout a file from perforce.
+" Checkout a file from perforce.
 function! P4Checkout()
 	if exists("b:p4path")
-		if (confirm("Checkout from Perforce?", "&Yes\n&No", 1) == 1)
-			call system("p4 edit \"" . b:p4path . "\" > /dev/null")
-			if v:shell_error == 0
-				set noreadonly
-			endif
+		let l:p4error = system("p4 edit \"" . b:p4path . "\"")
+		echom l:p4error
+		if l:p4error =~ 'opened for edit'
+			set noreadonly
+		else
+			echoe l:p4error
 		endif
 	endif
 endfunction
@@ -170,6 +182,7 @@ if !exists("au_p4_cmd")
    let au_p4_cmd=1
    au BufEnter * call IsUnderPerforce()
    au FileChangedRO * call P4Checkout()
+   au BufWritePre * :if &readonly | call P4Checkout()
 endif
 
 " ***********************************
