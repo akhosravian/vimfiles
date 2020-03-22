@@ -3,7 +3,7 @@ let mapleader = " "
 
 "Pathogen
 execute pathogen#infect()
-syntax enable
+syntax on
 filetype plugin indent on
 
 " ***********************************
@@ -178,43 +178,26 @@ endfunction
 
 command! FormatJSON %!python -m json.tool
 
-if !exists("au_p4_cmd")
-   let au_p4_cmd=1
-   au BufEnter * call IsUnderPerforce()
-   au FileChangedRO * call P4Checkout()
-   au BufWritePre * :if &readonly | call P4Checkout()
-endif
+augroup p4cmds
+	autocmd!
+	autocmd BufEnter * call IsUnderPerforce()
+	autocmd FileChangedRO * call P4Checkout()
+	autocmd BufWritePre * :if &readonly | call P4Checkout() | :endif
+augroup END
 
 " ***********************************
 " *         Language Specific       *
 " ***********************************
-au Filetype python setlocal expandtab tabstop=8 shiftwidth=4 softtabstop=4
-au Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
-
-"for golang
-filetype off
-filetype plugin indent off
-set runtimepath+=/usr/local/go/misc/vim
-filetype plugin indent on
-syntax on
-autocmd FileType go compiler go
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
+augroup python_js_language_settings
+	autocmd!
+	" Should move this stuff to a ftplugin file
+	autocmd FileType python setlocal expandtab tabstop=8 shiftwidth=4 softtabstop=4
+	autocmd FileType javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
+augroup END
 
 " ***********************************
 " *         Plugin settings         *
 " ***********************************
-
-" clang-format
-augroup clang_format_commands
-	autocmd!
-
-	function! ClangFormat()
-		let l:lines="all"
-		py3f ~/.vim/clang-format.py
-	endfunction
-
-	autocmd Filetype cpp autocmd BufWritePre <buffer> call ClangFormat()
-augroup END
 
 " YouCompleteMe
 let g:ycm_add_preview_to_completeopt = 1
