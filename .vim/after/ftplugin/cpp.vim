@@ -9,3 +9,12 @@ function! ClangFormatDiff()
 endfunction
 
 autocmd! BufWritePre <buffer> call ClangFormatAll()
+
+function! SwitchSourceHeader()
+	if (expand("%:e") == "h")
+		find %:t:r.cpp
+	else
+		find %:t:r.h
+	endif
+endfunction
+nnoremap <leader>o :call SwitchSourceHeader()<CR>
