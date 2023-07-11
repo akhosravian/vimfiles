@@ -39,6 +39,12 @@ set statusline+=%-14.(%l,%c%V%)\ %<%P        " offset
 
 set laststatus=2 " show status line even with a single window
 
+" fix cursor shape in windows terminal
+if &term =~ "xterm"
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[3 q"
+    let &t_EI = "\<Esc>[2 q"
+endif
 
 colors zenburn
 
